@@ -1,9 +1,8 @@
 {
   "name": "wetube",
   "version": "1.0.0",
-  "description": "The best way to watch videos.",
-  "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -11,5 +10,8 @@
     "url": "https://github.com/syk25/wetube"
   },
   "author": "syk25",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.0"
+  }
 }

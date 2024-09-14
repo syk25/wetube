@@ -11,7 +11,7 @@ const handleHome = (req, res) => {
     // console.log(res);
 
     // return res.end(); // 요청을 끝내는 법 중에 하나 - 파이썬의 pass와 비슷한 역할 - 프로그램의 무한 실행을 중단시킴
-    return res.send("I still love you.");
+    return res.send("<h1>I still love you.</h1>");
 }; // NOTE: route handler
 
 app.get("/", handleHome); // 요청은 받았지만 아직 응답은 아직 하지는 않았다.
@@ -24,6 +24,6 @@ const handleListening = () =>
 app.listen(PORT, handleListening); // localhost:4000 에 접속 가능
 
 const handleLogin = (req, res) => {
-    return res.send("Login here.");
+    return res.send({ message: "Login here." });
 };
 app.get("/login", handleLogin);

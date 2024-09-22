@@ -2,28 +2,26 @@ import express from "express";
 
 const PORT = 4000;
 
-const app = express(); // Express application 생성
-
-/* NOTE: GET 요청 */
-const handleHome = (req, res) => {
-    // req: 서버한테 전달되는 내용을 표현하는 객체
-    // console.log(req);
-    // console.log(res);
-
-    // return res.end(); // 요청을 끝내는 법 중에 하나 - 파이썬의 pass와 비슷한 역할 - 프로그램의 무한 실행을 중단시킴
-    return res.send("<h1>I still love you.</h1>");
-}; // NOTE: route handler
-
-app.get("/", handleHome); // 요청은 받았지만 아직 응답은 아직 하지는 않았다.
-
-/* NOTE: 서버 연결에 대한 콜백함수 */
 const handleListening = () =>
     console.log(`Server is listening on port http://localhost:${PORT} 🚀`);
 
-/* NOTE:서버에 연결 */
-app.listen(PORT, handleListening); // localhost:4000 에 접속 가능
+const app = express();
+app.listen(PORT, handleListening);
+
+const gossipMiddleware = (req, res, next) => {
+    // 미들웨어는 요청에 응답하지 않고 다른 함수에게 요청을 토스함
+    // next 함수 실행시 미들웨어라는 의미
+    console.log(`Someone is going to request: ${req.url}`);
+    next(); // 다음에 연결 된 함수 실행
+};
+
+const handleHome = (req, res) => {
+    return res.send("I love middlewares");
+};
 
 const handleLogin = (req, res) => {
     return res.send({ message: "Login here." });
 };
+
+app.get("/", gossipMiddleware, handleHome); // 미들웨어 실행 후 다음 함수 실행, 여기서 handleHome은 finalware - get 메서드 설명을 보면 헨들러는 여러개 등록 가능
 app.get("/login", handleLogin);

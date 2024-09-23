@@ -3,44 +3,35 @@ import morgan from "morgan";
 
 const PORT = 4000;
 
-const handleListening = () =>
-    console.log(`Server is listening on port http://localhost:${PORT} 🚀`);
-
 const app = express();
-const logger = morgan("dev"); // logger middleware: 정교함: 메서드, 경로, url, 상태코드, 실행시간 반환
 app.listen(PORT, handleListening);
 
-const privateMiddleware = (req, res, next) => {
-    const url = req.url;
-    if (url === "/protected") {
-        return res.send("<h1>Not allowed</h1>");
-    } else {
-        console.log("The url is allowed. You may continue");
-        next();
-    }
-};
-
-const handleLogin = (req, res) => {
-    return res.send({ message: "Login here." });
-};
-
-const handleProtected = (req, res) => {
-    console.log("Welcome to the private lounge");
-};
-
-const home = (req, res) => {
-    return res.send("Hello!");
-};
-
-const login = (req, res) => {
-    return res.send("login");
-};
-
+const logger = morgan("dev");
 app.use(logger);
-app.get("/private", handleProtected);
-app.get("/", home);
-app.get("/login", login);
 
-app.use(privateMiddleware);
+/* NOTE: global Router */
+const globalRouter = express.Router();
 
-app.get("/login", handleLogin);
+const handleHome = (req, res) => res.send("Home");
+
+globalRouter.get("/", handleHome);
+
+/* NOTE: User Router */
+const userRouter = express.Router();
+
+const handleEditUser = (req, res) => res.send("Edit User");
+
+userRouter.get("/edit", handleEditUser);
+
+/* NOTE: Video Router */
+const videoRouter = express.Router();
+const handleWatchVideo = (req, res) => res.send("Edit video");
+videoRouter.get("/watch", handleWatchVideo);
+
+/* NOTE: Router 등록 */
+app.use("/", globalRouter);
+app.use("/user", userRouter);
+app.use("video", videoRouter);
+
+const handleListening = () =>
+    console.log(`Server is listening on port http://localhost:${PORT} 🚀`);

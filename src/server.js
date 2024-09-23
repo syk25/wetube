@@ -7,6 +7,10 @@ import videoRouter from "./routers/videoRouter";
 const PORT = 4000;
 
 const app = express();
+
+const handleListening = () =>
+    console.log(`Server is listening on port http://localhost:${PORT} 🚀`);
+
 app.listen(PORT, handleListening);
 
 const logger = morgan("dev");
@@ -16,6 +20,3 @@ app.use(logger);
 app.use("/", globalRouter);
 app.use("/user", userRouter);
 app.use("video", videoRouter);
-
-const handleListening = () =>
-    console.log(`Server is listening on port http://localhost:${PORT} 🚀`);

@@ -19,4 +19,4 @@ app.use(logger);
 /* NOTE: Router 등록 */
 app.use("/", globalRouter);
 app.use("/user", userRouter);
-app.use("video", videoRouter);
+app.use("/video", videoRouter);

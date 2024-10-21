@@ -1,0 +1,20 @@
+{
+    "name": "wetube",
+    "version": "1.0.0",
+    "description": "Easiest way to watch cool videos.",
+    "scripts": {
+           "dev": "nodemon --exec babel-node index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Ben Kim",
+    "license": "MIT",
+    "dependencies": {
+        "express": "^4.21.1"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.25.8",
+        "@babel/node": "^7.25.7",
+        "@babel/preset-env": "^7.25.8",
+        "nodemon": "^3.1.7"
+    }
+}

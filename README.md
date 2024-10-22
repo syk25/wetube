@@ -1,1 +1,1 @@
-wetube
+Youtube Clone project using NodeJS, express, babel, nodemon and pug.

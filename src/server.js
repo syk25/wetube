@@ -9,4 +9,10 @@ const handleHome = (req, res) => {
     return res.end();
 };
 
+const handleLogin = (req, res) => {
+    console.log(`Current route: http://localhost:${PORT}/login`);
+    return res.send("Login Page");
+};
+
 app.get("/", handleHome);
+app.get("/login", handleLogin);

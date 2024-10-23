@@ -1,18 +1,21 @@
 import express from "express";
+import morgan from "morgan";
 
 const app = express();
+const logger = morgan("dev");
 const PORT = 4000;
 app.listen(PORT, () => console.log(`Connected to http://localhost:${PORT} 🚀`));
 
-const handleHome = (req, res) => {
+const home = (req, res) => {
     console.log("current route: http://localhost");
     return res.end();
 };
 
-const handleLogin = (req, res) => {
+const login = (req, res) => {
     console.log(`Current route: http://localhost:${PORT}/login`);
     return res.send("Login Page");
 };
 
-app.get("/", handleHome);
-app.get("/login", handleLogin);
+app.use(logger);
+app.get("/", home);
+app.get("/login", login);

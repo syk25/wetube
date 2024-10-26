@@ -7,10 +7,12 @@ search
 login
 join
 
-videos/watch
-videos/edit
-videos/delete
-videos/comment
+videos/:id -> See video
+videos/:id/edit -> Edit video
+videos/:id/delete -> Delete video
+videos/upload -> Upload video
 
-user/edit
-users/delete
+users/:id -> See user
+users/logout -> Log out
+users/:id/edit -> Edit My profile
+users/:id/delete -> delete my profile

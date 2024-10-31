@@ -2,6 +2,19 @@ doctype html
 html(lang="ko")
     head
         title #{pageTitle} | Wetube
-    body 
-        block content
+        link(rel="stylesheet", href="https://unpkg.com/mvp.css")
+    body
+        header 
+            if fakeUser.loggedIn
+                small Welcome #{fakeUser.name}
+            nav 
+                ul 
+                    if fakeUser.loggedIn
+                        li
+                            a(href="/logout") Logout
+                    else 
+                        li
+                            a(href="/login") Login
+        main
+            block content
     include partials/footer.pug

@@ -1,24 +1,68 @@
-const Video = (myTitle, myRating, myComments, myCreatedAt, myViews, myId) => {
-    return {
-        title: myTitle,
-        rating: myRating,
-        comments: myComments,
-        createdAt: myCreatedAt,
-        views: myViews,
-        id: myId,
-    };
+let videos = [
+    {
+        title: "First Video",
+        rating: 5,
+        comments: 2,
+        createdAt: "2 minutes ago",
+        views: 1,
+        id: 1,
+    },
+    {
+        title: "Second Video",
+        rating: 5,
+        comments: 2,
+        createdAt: "2 minutes ago",
+        views: 59,
+        id: 2,
+    },
+    {
+        title: "Third Video",
+        rating: 5,
+        comments: 2,
+        createdAt: "2 minutes ago",
+        views: 59,
+        id: 3,
+    },
+];
+
+export const trending = (req, res) => {
+    return res.render("home", { pageTitle: "Home", videos });
+};
+export const watch = (req, res) => {
+    const { id } = req.params;
+    const video = videos[id - 1];
+    return res.render("watch", {
+        pageTitle: `Watching: ${video.title}`,
+        video,
+    });
+};
+export const getEdit = (req, res) => {
+    const { id } = req.params;
+    const video = videos[id - 1];
+    return res.render("edit", { pageTitle: `Editing: ${video.title}`, video });
+};
+export const postEdit = (req, res) => {
+    const { id } = req.params;
+    const { title } = req.body;
+    videos[id - 1].title = title;
+    return res.redirect(`/videos/${id}`);
 };
 
-const videos = [
-    Video("First Video", 5, 296, "2 minutes ago", 590, 1),
-    Video("Second Video", 2, 10, "2 minutes ago", 691, 2),
-    Video("Third Video", 4, 200, "2 minutes ago", 400, 3),
-    Video("Fourth Video", 3, 21, "2 minutes ago", 629, 4),
-];
-export const trending = (req, res) =>
-    res.render("home", { pageTitle: "Home", videos });
-export const search = (req, res) => res.send("Search videos");
-export const see = (req, res) => res.render("watch", { pageTitle: "Watch" });
-export const edit = (req, res) => res.render("edit", { pageTitle: "Edit" });
-export const deleteVideo = (req, res) => res.send("Delete video");
-export const upload = (req, res) => res.send("Upload video");
+export const getUpload = (req, res) => {
+    return res.render("upload", { pageTitle: "Upload Video" });
+};
+
+export const postUpload = (req, res) => {
+    // 비디오 배열에서의 비디오 추가
+    const { title } = req.body;
+    const newVideo = {
+        title,
+        rating: 0,
+        comments: 0,
+        createdAt: "Just now",
+        views: 0,
+        id: videos.length + 1,
+    };
+    videos.push(newVideo);
+    return res.redirect("/");
+};

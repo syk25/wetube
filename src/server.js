@@ -4,10 +4,8 @@ import globalRouter from "./routers/globalRouter";
 import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
 
-const PORT = 4000;
-
-const app = express();
 const logger = morgan("dev");
+const app = express();
 
 app.set("view engine", "pug");
 app.set("views", process.cwd() + "/src/views");
@@ -18,4 +16,5 @@ app.use("/", globalRouter);
 app.use("/users", userRouter);
 app.use("/videos", videoRouter);
 
-app.listen(PORT, () => console.log(`Connected to http://localhost:${PORT} 🚀`));
+
+export default app;

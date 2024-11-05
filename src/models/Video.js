@@ -14,6 +14,12 @@ const videoSchema = new mongoose.Schema({
     },
 });
 
+videoSchema.static("formatHashtags", function (hashtags) {
+    return hashtags
+        .split(",")
+        .map((word) => (word.startsWith("#") ? word : `#${word}`));
+});
+
 // 2. 모델 내보내기
 const Video = mongoose.model("Video", videoSchema);
 

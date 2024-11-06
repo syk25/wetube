@@ -2,7 +2,7 @@ import Video from "../models/Video";
 
 // promise: 코드가 작성순서대로 실행이 완료되게끔 처리하는 기법: async: 포장하는 함수, await 실행이 보장되어야 하는 함수
 export const home = async (req, res) => {
-    const videos = await Video.find({});
+    const videos = await Video.find({}).sort({ createdAt: "desc" });
     return res.render("home", { pageTitle: "Home", videos });
 };
 
@@ -69,4 +69,17 @@ export const deleteVideo = async (req, res) => {
     const { id } = req.params;
     await Video.findByIdAndDelete(id);
     return res.redirect("/");
+};
+
+export const search = async (req, res) => {
+    const { keyword } = req.query;
+    let videos = [];
+    if (keyword) {
+        videos = await Video.find({
+            title: {
+                $regex: new RegExp(`${keyword}$`, "i"),
+            },
+        });
+    }
+    return res.render("search", { pageTitle: "Search", videos });
 };

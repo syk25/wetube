@@ -36,7 +36,8 @@ export const postJoin = async (req, res) => {
     }
 };
 
-export const getLogin = (req, res) => res.send("Login");
+export const getLogin = (req, res) =>
+    res.render("login", { pageTitle: "Login" });
 
 export const postLogin = async (req, res) => {
     const { username, password } = req.body;
@@ -57,7 +58,8 @@ export const postLogin = async (req, res) => {
             errorMessage: "Wrong password",
         });
     }
-
+    req.session.loggedIn = true;
+    req.session.user = user;
     res.redirect("/");
 };
 

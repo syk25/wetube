@@ -1,8 +1,8 @@
 import User from "../models/User";
+import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 
 export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
-
 export const postJoin = async (req, res) => {
     const { name, username, email, password, password2, location } = req.body;
     const pageTitle = "Join";
@@ -31,11 +31,10 @@ export const postJoin = async (req, res) => {
     } catch (error) {
         return res.status(400).render("join", {
             pageTitle: "Upload Video",
-            errorMessage: "This username/email is already taken.",
+            errorMessage: error._message,
         });
     }
 };
-
 export const getLogin = (req, res) =>
     res.render("login", { pageTitle: "Login" });
 
@@ -60,40 +59,6 @@ export const postLogin = async (req, res) => {
     req.session.user = user;
     return res.redirect("/");
 };
-
-export const see = (req, res) => {
-    console.log(req.params);
-    res.send("See profile");
-};
-
-export const getEdit = (req, res) => {
-    return res.render("edit-profile", {
-        pageTitle: "Edit profile",
-    });
-};
-
-export const postEdit = async (req, res) => {
-    const {
-        session: {
-            user: { _id },
-        },
-        body: { name, email, username, location },
-    } = req;
-    const updatedUser = await User.findByIdAndUpdate(
-        _id,
-        {
-            name,
-            email,
-            username,
-            location,
-        },
-        { new: true }
-    );
-    req.session.user = updatedUser;
-    return res.redirect("/users/edit");
-};
-
-export const deleteUser = (req, res) => res.send("Remove User");
 
 export const startGithubLogin = (req, res) => {
     const baseUrl = "https://github.com/login/oauth/authorize";
@@ -145,6 +110,7 @@ export const finishGithubLogin = async (req, res) => {
             (email) => email.primary === true && email.verified === true
         );
         if (!emailObj) {
+            // set notification
             return res.redirect("/login");
         }
         let user = await User.findOne({ email: emailObj.email });
@@ -171,6 +137,31 @@ export const logout = (req, res) => {
     req.session.destroy();
     return res.redirect("/");
 };
+export const getEdit = (req, res) => {
+    return res.render("edit-profile", { pageTitle: "Edit Profile" });
+};
+export const postEdit = async (req, res) => {
+    const {
+        session: {
+            user: { _id, avatarUrl },
+        },
+        body: { name, email, username, location },
+        file,
+    } = req;
+    const updatedUser = await User.findByIdAndUpdate(
+        _id,
+        {
+            avatarUrl: file ? file.path : avatarUrl,
+            name,
+            email,
+            username,
+            location,
+        },
+        { new: true }
+    );
+    req.session.user = updatedUser;
+    return res.redirect("/users/edit");
+};
 
 export const getChangePassword = (req, res) => {
     if (req.session.user.socialOnly === true) {
@@ -180,7 +171,6 @@ export const getChangePassword = (req, res) => {
         pageTitle: "Change Password",
     });
 };
-
 export const postChangePassword = async (req, res) => {
     const {
         session: {
@@ -206,3 +196,5 @@ export const postChangePassword = async (req, res) => {
     await user.save();
     return res.redirect("/users/logout");
 };
+
+export const see = (req, res) => res.send("See User");

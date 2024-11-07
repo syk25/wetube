@@ -16,6 +16,7 @@
 @import "./screens/search.scss";
 @import "./screens/profile.scss";
 @import "./screens/edit-profile.scss";
+
 // Defaults
 a {
   color: inherit;
@@ -28,6 +29,7 @@ body {
   background-color: $bg;
   color: white;
 }
+
 main {
   max-width: 1200px;
   width: 100%;

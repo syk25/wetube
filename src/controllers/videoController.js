@@ -1,6 +1,5 @@
 import Video from "../models/Video";
 
-// promise: 코드가 작성순서대로 실행이 완료되게끔 처리하는 기법: async: 포장하는 함수, await 실행이 보장되어야 하는 함수
 export const home = async (req, res) => {
     const videos = await Video.find({}).sort({ createdAt: "desc" });
     return res.render("home", { pageTitle: "Home", videos });
@@ -10,12 +9,9 @@ export const watch = async (req, res) => {
     const { id } = req.params;
     const video = await Video.findById(id);
     if (!video) {
-        return res.status(404).render("404", { pageTitle: "Video not found." });
+        return res.render("404", { pageTitle: "Video not found." });
     }
-    return res.render("watch", {
-        pageTitle: video.title,
-        video,
-    });
+    return res.render("watch", { pageTitle: video.title, video });
 };
 
 export const getEdit = async (req, res) => {
@@ -32,7 +28,7 @@ export const postEdit = async (req, res) => {
     const { title, description, hashtags } = req.body;
     const video = await Video.exists({ _id: id });
     if (!video) {
-        return res.render("404", { pageTitle: "Video not found." });
+        return res.status(404).render("404", { pageTitle: "Video not found." });
     }
     await Video.findByIdAndUpdate(id, {
         title,
@@ -47,12 +43,13 @@ export const getUpload = (req, res) => {
 };
 
 export const postUpload = async (req, res) => {
+    const { path: fileUrl } = req.file;
     const { title, description, hashtags } = req.body;
     try {
         await Video.create({
             title,
             description,
-            createdAt: Date.now(),
+            fileUrl,
             hashtags: Video.formatHashtags(hashtags),
         });
         return res.redirect("/");

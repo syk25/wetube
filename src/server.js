@@ -18,11 +18,11 @@ app.use(express.urlencoded({ extended: true }));
 // 라우트 이전에 세션 설정
 app.use(
     session({
-        secret: "Hello!",
-        resave: true,
-        saveUninitialized: true,
+        secret: process.env.COOKIE_SECRET,
+        resave: false,
+        saveUninitialized: false,
         store: MongoStore.create({
-            mongoUrl: "mongodb://127.0.0.1:27017/wetube",
+            mongoUrl: process.env.DB_URL,
         }),
     })
 );

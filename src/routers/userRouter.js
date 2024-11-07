@@ -1,5 +1,12 @@
 import express from "express";
-import { see, logout, edit, deleteUser, startGithubLogin } from "../controllers/userController";
+import {
+    see,
+    logout,
+    edit,
+    deleteUser,
+    startGithubLogin,
+    finishGithubLogin,
+} from "../controllers/userController";
 
 const userRouter = express.Router();
 
@@ -8,5 +15,6 @@ userRouter.get("/:id", see);
 userRouter.get("/:id/edit", edit);
 userRouter.get("/:id/delete", deleteUser);
 userRouter.get("/github/start", startGithubLogin);
+userRouter.get("/github/finish", finishGithubLogin);
 
 export default userRouter;

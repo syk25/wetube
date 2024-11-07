@@ -1,8 +1,5 @@
 import mongoose from "mongoose";
 
-// 데이터베이스에게 모델을 알려주자
-
-// 1. 스키마 결정하기
 const videoSchema = new mongoose.Schema({
     title: { type: String, required: true, trim: true, maxLength: 80 },
     description: { type: String, required: true, trim: true, minLength: 20 },
@@ -20,7 +17,6 @@ videoSchema.static("formatHashtags", function (hashtags) {
         .map((word) => (word.startsWith("#") ? word : `#${word}`));
 });
 
-// 2. 모델 내보내기
 const Video = mongoose.model("Video", videoSchema);
 
 export default Video;

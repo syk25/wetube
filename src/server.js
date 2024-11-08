@@ -1,4 +1,5 @@
 import express from "express";
+import flash from "express-flash";
 import morgan from "morgan";
 import session from "express-session";
 import MongoStore from "connect-mongo";
@@ -23,6 +24,7 @@ app.use(
         store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
     })
 );
+app.use(flash());
 app.use(localsMiddleware);
 app.use("/uploads", express.static("uploads"));
 app.use("/static", express.static("assets"));
